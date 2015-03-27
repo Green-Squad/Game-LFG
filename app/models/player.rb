@@ -1,8 +1,8 @@
 class Player < ActiveRecord::Base
-  belongs_to :group
-  belongs_to :player_options
-  has_one :region
-  has_one :console
-  has_one :game
-  has_one :user
+  belongs_to :console
+  belongs_to :game
+  belongs_to :region
+  belongs_to :user
+  has_many :groups
+  has_many :player_options
 end

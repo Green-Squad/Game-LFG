@@ -1,4 +1,4 @@
 class Option < ActiveRecord::Base
-  belongs_to :player_options
-  has_one :game
+  belongs_to :game
+  has_many :player_options
 end

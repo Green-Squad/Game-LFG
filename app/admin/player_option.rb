@@ -1,4 +1,4 @@
-ActiveAdmin.register PlayerOptions do
+ActiveAdmin.register PlayerOption do
   permit_params :value
 
 

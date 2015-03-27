@@ -1,4 +1,4 @@
 class Group < ActiveRecord::Base
-  has_one :player
-  has_one :activity
+  belongs_to :activity
+  belongs_to :player
 end

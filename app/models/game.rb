@@ -1,6 +1,7 @@
 class Game < ActiveRecord::Base
-  belongs_to :game_console
-  belongs_to :option
-  belongs_to :player
-  belongs_to :activity
+  has_many :players
+  has_many :game_consoles
+  has_many :consoles, through: :game_consoles
+  has_many :options
+  has_many :activities
 end

@@ -1,6 +1,6 @@
 class Activity < ActiveRecord::Base
+  belongs_to :game
+  has_many :groups
   belongs_to :activity
-  belongs_to :group
-  has_one :game
   has_one :activity
 end
