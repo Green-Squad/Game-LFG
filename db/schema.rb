@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150401143213) do
+ActiveRecord::Schema.define(version: 20150401143203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "active_admin_comments", force: true do |t|
+  create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace"
     t.text     "body"
     t.string   "resource_id",   null: false
@@ -31,18 +31,18 @@ ActiveRecord::Schema.define(version: 20150401143213) do
   add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
   add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
 
-  create_table "activities", force: true do |t|
+  create_table "activities", force: :cascade do |t|
     t.string   "name"
+    t.integer  "game_id"
     t.integer  "activity_id"
-    t.integer  "group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "activities", ["activity_id"], name: "index_activities_on_activity_id", using: :btree
-  add_index "activities", ["group_id"], name: "index_activities_on_group_id", using: :btree
+  add_index "activities", ["game_id"], name: "index_activities_on_game_id", using: :btree
 
-  create_table "admin_users", force: true do |t|
+  create_table "admin_users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
@@ -60,94 +60,102 @@ ActiveRecord::Schema.define(version: 20150401143213) do
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
 
-  create_table "consoles", force: true do |t|
-    t.integer  "game_console_id"
-    t.integer  "player_id"
+  create_table "consoles", force: :cascade do |t|
+    t.string   "name",       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "consoles", ["game_console_id"], name: "index_consoles_on_game_console_id", using: :btree
-  add_index "consoles", ["player_id"], name: "index_consoles_on_player_id", using: :btree
-
-  create_table "game_consoles", force: true do |t|
+  create_table "game_consoles", force: :cascade do |t|
+    t.integer  "game_id"
+    t.integer  "console_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "games", force: true do |t|
-    t.string   "name"
-    t.string   "slug"
-    t.integer  "game_console_id"
-    t.integer  "option_id"
+  add_index "game_consoles", ["console_id"], name: "index_game_consoles_on_console_id", using: :btree
+  add_index "game_consoles", ["game_id"], name: "index_game_consoles_on_game_id", using: :btree
+
+  create_table "games", force: :cascade do |t|
+    t.string   "name",       null: false
+    t.string   "slug",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "games", ["slug"], name: "index_games_on_slug", unique: true, using: :btree
+
+  create_table "groups", force: :cascade do |t|
+    t.string   "looking_for",              null: false
+    t.text     "notes",       default: "", null: false
+    t.datetime "expires_at",               null: false
     t.integer  "player_id"
     t.integer  "activity_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "games", ["activity_id"], name: "index_games_on_activity_id", using: :btree
-  add_index "games", ["game_console_id"], name: "index_games_on_game_console_id", using: :btree
-  add_index "games", ["option_id"], name: "index_games_on_option_id", using: :btree
-  add_index "games", ["player_id"], name: "index_games_on_player_id", using: :btree
+  add_index "groups", ["activity_id"], name: "index_groups_on_activity_id", using: :btree
+  add_index "groups", ["player_id"], name: "index_groups_on_player_id", using: :btree
 
-  create_table "groups", force: true do |t|
-    t.string   "looking_for"
-    t.text     "notes"
-    t.datetime "expires_at"
+  create_table "identifiers", force: :cascade do |t|
+    t.string   "ip_address",  null: false
+    t.string   "fingerprint", null: false
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "identifiers", force: true do |t|
-    t.string   "ip_address"
-    t.string   "fingerprint"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+  add_index "identifiers", ["user_id"], name: "index_identifiers_on_user_id", using: :btree
 
-  create_table "options", force: true do |t|
-    t.string   "name"
-    t.string   "input_type"
-    t.string   "placeholder"
+  create_table "options", force: :cascade do |t|
+    t.string   "name",                         null: false
+    t.string   "input_type",  default: "text", null: false
+    t.string   "placeholder",                  null: false
     t.integer  "min_value"
     t.integer  "max_value"
-    t.boolean  "required"
-    t.integer  "player_options_id"
+    t.boolean  "required",    default: false,  null: false
+    t.integer  "game_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "options", ["player_options_id"], name: "index_options_on_player_options_id", using: :btree
+  add_index "options", ["game_id"], name: "index_options_on_game_id", using: :btree
 
-  create_table "player_options", force: true do |t|
+  create_table "player_options", force: :cascade do |t|
     t.string   "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "players", force: true do |t|
-    t.string   "gamertag"
-    t.boolean  "mic"
-    t.integer  "group_id"
-    t.integer  "player_options_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "players", ["group_id"], name: "index_players_on_group_id", using: :btree
-  add_index "players", ["player_options_id"], name: "index_players_on_player_options_id", using: :btree
-
-  create_table "regions", force: true do |t|
-    t.string   "name"
+    t.integer  "option_id"
     t.integer  "player_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "regions", ["player_id"], name: "index_regions_on_player_id", using: :btree
+  add_index "player_options", ["option_id"], name: "index_player_options_on_option_id", using: :btree
+  add_index "player_options", ["player_id"], name: "index_player_options_on_player_id", using: :btree
 
-  create_table "users", force: true do |t|
+  create_table "players", force: :cascade do |t|
+    t.string   "gamertag",                   null: false
+    t.boolean  "mic",        default: false, null: false
+    t.integer  "region_id"
+    t.integer  "console_id"
+    t.integer  "game_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "players", ["console_id"], name: "index_players_on_console_id", using: :btree
+  add_index "players", ["game_id"], name: "index_players_on_game_id", using: :btree
+  add_index "players", ["region_id"], name: "index_players_on_region_id", using: :btree
+  add_index "players", ["user_id"], name: "index_players_on_user_id", using: :btree
+
+  create_table "regions", force: :cascade do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
@@ -158,16 +166,13 @@ ActiveRecord::Schema.define(version: 20150401143213) do
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
+    t.string   "api_token"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
-    t.string   "api_token"
-    t.integer  "identifier_id"
-    t.integer  "player_id"
   end
 
+  add_index "users", ["api_token"], name: "index_users_on_api_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["identifier_id"], name: "index_users_on_identifier_id", using: :btree
-  add_index "users", ["player_id"], name: "index_users_on_player_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end
