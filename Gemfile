@@ -3,14 +3,11 @@ source 'https://rubygems.org'
 gem 'activeadmin', github: 'activeadmin'
 
 gem 'bundler'
-gem 'coffee-rails'
 gem 'devise'
 gem 'jbuilder'
 gem 'pg'
 gem 'rails', '~> 4.2.0'
-gem 'sass-rails'
 gem 'tzinfo-data'
-gem 'uglifier'
 gem 'validates_formatting_of'
 
 group :development do

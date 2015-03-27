@@ -231,9 +231,6 @@ GEM
       thread_safe (~> 0.1)
     tzinfo-data (1.2015.2)
       tzinfo (>= 1.0.0)
-    uglifier (2.7.1)
-      execjs (>= 0.3.0)
-      json (>= 1.8.0)
     validates_formatting_of (0.8.1)
       activemodel (~> 4.0)
     warden (1.2.3)
@@ -249,7 +246,6 @@ PLATFORMS
 DEPENDENCIES
   activeadmin!
   bundler
-  coffee-rails
   cucumber-rails
   database_cleaner
   devise
@@ -260,10 +256,8 @@ DEPENDENCIES
   pg
   rails (~> 4.2.0)
   rspec-rails
-  sass-rails
   shoulda-matchers
   spring
   tzinfo-data
-  uglifier
   validates_formatting_of
   whenever
