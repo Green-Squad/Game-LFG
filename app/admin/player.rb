@@ -1,4 +1,5 @@
 ActiveAdmin.register Player do
+  permit_params :gamertag, :mic
 
 
   # See permitted parameters documentation:
