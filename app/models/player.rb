@@ -4,4 +4,5 @@ class Player < ActiveRecord::Base
   has_one :region
   has_one :console
   has_one :game
+  has_one :user
 end
