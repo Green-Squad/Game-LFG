@@ -1,4 +1,5 @@
 ActiveAdmin.register Game do
+  permit_params :name, :slug
 
 
   # See permitted parameters documentation:
