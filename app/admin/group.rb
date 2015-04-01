@@ -1,4 +1,5 @@
 ActiveAdmin.register Group do
+  permit_params :looking_for, :notes, :expires_at
 
 
   # See permitted parameters documentation:
