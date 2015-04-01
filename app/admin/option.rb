@@ -1,4 +1,5 @@
 ActiveAdmin.register Option do
+  permit_params :name, :input_type, :placeholder, :min_value, :max_value, :required
 
 
   # See permitted parameters documentation:
