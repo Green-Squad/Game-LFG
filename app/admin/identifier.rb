@@ -1,4 +1,5 @@
 ActiveAdmin.register Identifier do
+  permit_params :ip_address, :fingerprint
 
 
   # See permitted parameters documentation:
