@@ -7,7 +7,6 @@ class ApplicationController < ActionController::Base
     user = nil
     authenticate_with_http_token do |token, options|
       user = User.find_by(api_token: token)
-      logger.debug "api token: #{token}"
     end
     if user
       sign_in(user)
