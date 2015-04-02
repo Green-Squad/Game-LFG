@@ -1,7 +1,6 @@
 FactoryGirl.define do
   factory :console do
-    game_console nil
-player nil
+    name Faker::Hacker.noun
   end
 
 end

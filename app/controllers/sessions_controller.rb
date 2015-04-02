@@ -20,7 +20,7 @@ class SessionsController < ApplicationController
       json = user.to_json
     else
       status = 422
-      json = { errors: ['No fingerprint was sent.'] }
+      json = {errors: {fingerprint: ['No fingerprint was sent.']}}
     end
 
     render json: json, status: status

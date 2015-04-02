@@ -1,7 +1,6 @@
 FactoryGirl.define do
   factory :region do
-    name "MyString"
-player nil
+    name Faker::Address.country
   end
 
 end

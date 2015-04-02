@@ -2,9 +2,7 @@ require 'rails_helper'
 
 describe SessionsController, type: :controller do
   describe 'POST #create' do
-    before(:each) do
-      request.headers['Accept'] = 'application/json'
-    end
+
     context 'good request' do
 
       before(:each) do

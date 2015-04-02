@@ -5,5 +5,6 @@ Rails.application.routes.draw do
 
   constraints format: :json do
     resource :sessions, only: [:create]
+    resource :players, only: [:create]
   end
 end
