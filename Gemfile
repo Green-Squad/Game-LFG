@@ -4,6 +4,7 @@ gem 'activeadmin', github: 'activeadmin'
 
 gem 'bundler'
 gem 'devise'
+gem 'friendly_id'
 gem 'jbuilder'
 gem 'pg'
 gem 'rails', '~> 4.2.0'

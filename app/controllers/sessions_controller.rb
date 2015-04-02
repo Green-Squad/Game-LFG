@@ -8,14 +8,14 @@ class SessionsController < ApplicationController
       identifier = Identifier.where(fingerprint: fingerprint, ip_address: ip_address).first
 
       if user = current_user
-        Identifier.create(fingerprint: fingerprint, ip_address: ip_address, user_id: user.id)
+        user.update_identifier(fingerprint, ip_address)
       elsif identifier
         user = User.find(identifier.user_id)
       else
         user = User.create
-        Identifier.create(fingerprint: fingerprint, ip_address: ip_address, user_id: user.id)
+        user.update_identifier(fingerprint, ip_address)
       end
-
+      user.generate_api_token
       status = 201
       json = user.to_json
     else

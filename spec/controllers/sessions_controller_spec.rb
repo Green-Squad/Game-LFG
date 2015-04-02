@@ -21,12 +21,19 @@ describe SessionsController, type: :controller do
         subject
         response_json = JSON.parse(response.body, symbolize_names: true)
 
-        expect(User.find(response_json[:id])).to_not eq(nil)
+        expect(User.find(response_json[:id])).to_not be_nil
       end
 
       it 'returns status 201' do
         subject
         expect(response).to have_http_status('201')
+      end
+
+      it 'has an api token' do
+        subject
+        response_json = JSON.parse(response.body, symbolize_names: true)
+
+        expect(response_json[:api_token]).to_not be_nil
       end
 
     end
@@ -47,7 +54,7 @@ describe SessionsController, type: :controller do
         subject
         response_json = JSON.parse(response.body, symbolize_names: true)
 
-        expect(response_json[:errors]).to_not eq(nil)
+        expect(response_json[:errors]).to_not be_nil
       end
 
       it 'returns status 422' do
