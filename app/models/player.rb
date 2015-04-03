@@ -4,7 +4,7 @@ class Player < ActiveRecord::Base
   belongs_to :region
   belongs_to :user
   has_many :groups
-  has_many :player_options
+  has_many :player_options, dependent: :destroy
 
   validates :gamertag, presence: true
   validates :console, presence: true
@@ -13,6 +13,17 @@ class Player < ActiveRecord::Base
   validates :user, presence: true
   validates :user, uniqueness: {scope: :game}
   validate :allowed_console
+
+  def full_json
+    player_options = PlayerOption.where(player_id: id)
+
+    player = attributes
+
+    player_options.each do |player_option|
+      player[player_option.option.name.to_sym] = player_option.value
+    end
+   player.to_json
+  end
 
   private
 
